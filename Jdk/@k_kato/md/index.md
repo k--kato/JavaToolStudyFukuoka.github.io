@@ -36,7 +36,7 @@ const addTimeline2016 = (profile) => {
 
 
 
-## JDK/Java 9 リリース スケジュール物語
+## Java 9 リリース スケジュール物語
 
 * 😄 2016 年 1 月 - 4 月 リリース予定
 <!-- .element: class="fragment" data-fragment-index="10" -->
