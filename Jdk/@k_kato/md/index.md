@@ -36,7 +36,7 @@ const addTimeline2016 = (profile) => {
 
 
 
-## Java 9 リリース スケジュール物語
+## JDK/Java 9 リリース スケジュール物語
 
 * 😄 2016 年 1 月 - 4 月 リリース予定
 <!-- .element: class="fragment" data-fragment-index="10" -->
@@ -224,15 +224,15 @@ jshell> /exit
 
 * REPL なら IDE デバッガー時の即時評価の方が高機能では？
 <!-- .element: class="fragment" data-fragment-index="20" -->
-  * jshell は import の自動補完機能がない
+  * jshell は import の自動補完機能がない(´；ω；｀)
 <!-- .element: class="fragment" data-fragment-index="20" -->
   * IntelliJ IDEA なら Evaluate Expression 中に import も自動補完
 <!-- .element: class="fragment" data-fragment-index="20" -->
-* Java の公式 REPL なのにメソッド参照の補完ができない
+* Java の公式 REPL なのにメソッド参照の補完ができない(´；ω；｀)
 <!-- .element: class="fragment" data-fragment-index="30" -->
   * `System.out::` + `Tab` で補完候補が表示されない
 <!-- .element: class="fragment" data-fragment-index="30" -->
-* javac と jshell に挙動差がある
+* javac と jshell に挙動差がある(´；ω；｀)
 <!-- .element: class="fragment" data-fragment-index="40" -->
   * クロージャーについて，JDK 9 javac だと事実上の final でコンパイル エラーなのに，REPL だと不純クロージャーとして評価される
 <!-- .element: class="fragment" data-fragment-index="40" -->
@@ -256,10 +256,14 @@ public class Main {
 
 * [Project Jigsaw](http://openjdk.java.net/projects/jigsaw/)
 * [JSR 376: Modularization of the JDK under Project Jigsaw (Java Module System)](http://openjdk.java.net/projects/jigsaw/doc/draft-java-module-system-requirements-12)
+* JAR Hell: 同一パッケージのバージョン違いで衝突した場合などで，突然挙動が変わることがある
+<!-- .element: class="fragment" data-fragment-index="10" -->
+ * java -cp "commons-math3-3.0.jar;commons-math3-3.6.1.jar;" で実行した場合，3.0 が先勝で，3.6.1 は使えない
+<!-- .element: class="fragment" data-fragment-index="10" -->
 * パッケージの可視性を制御する機能
-<!-- .element: class="fragment" data-fragment-index="10" -->
- * クラスやメソッドには public/protected/private があるが，package にはない
-<!-- .element: class="fragment" data-fragment-index="10" -->
+<!-- .element: class="fragment" data-fragment-index="15" -->
+ * クラスやメソッドには public/protected/private があるが，パッケージにはなかった
+<!-- .element: class="fragment" data-fragment-index="15" -->
 * ライブラリを公開する側が，公開/非公開パッケージを宣言できる
 <!-- .element: class="fragment" data-fragment-index="20" -->
 * ライブラリを使用する側が，使用/未使用パッケージを宣言できる
@@ -281,13 +285,13 @@ java -p modules -m com.product/com.product.Main
 
 * ライブラリ側で，公開/非公開パッケージを宣言できる
 ```java
-module com.lib.open {
+module com.lib.open { // src/lib/module-info.java
     exports com.lib.open;
 }
 ```
 * プロダクト側で，使用/未使用パッケージを宣言できる
 ```java
-module com.product {
+module com.product { // src/product/module-info.java
     requires com.lib.open;
     //　requires com.lib.close;
 }
@@ -413,9 +417,9 @@ java -p modules -m com.product/com.product.Main
 
 ## Java Module System を使った感想
 
-* このクールなライブラリを使ってみて！
+* このクールなライブラリを使ってみて！ところでモジュール名を調べる方法は？ 
 <!-- .element: class="fragment" data-fragment-index="10" -->
- * ところでモジュール名を調べる方法は？
+ * jdeps コマンドでモジュール一覧を取得可能👍
 <!-- .element: class="fragment" data-fragment-index="15" -->
 * module-info.java の名前を変えるとコンパイル エラーが発生する
 <!-- .element: class="fragment" data-fragment-index="20" -->
@@ -439,7 +443,7 @@ module declarations should be in a file named module-info.java
 * [JEP 110: HTTP/2 Client](http://openjdk.java.net/jeps/110)
 * 1999 年 6 月 RFC 2616 HTTP/1.1
 <!-- .element: class="fragment" data-fragment-index="10" -->
-* 2015 年 5 月 RFC 7540 HTTP/2 が標準化 
+* 2015 年 5 月 RFC 7540 HTTP/2 が標準化
 <!-- .element: class="fragment" data-fragment-index="10" -->
 * HTTP の Head-of-line Blocking (HoL) で同時接続数が制限されていた
 <!-- .element: class="fragment" data-fragment-index="20" -->
@@ -472,6 +476,7 @@ module com.product {
 // src/com/product/Main.java
 final CompletableFuture<String> bodyAsync = HttpClient.create().build()
         .request(URI.create("https://twitter.com/"))
+        //.version(HttpClient.Version.HTTP_2) // java.io.IOException: Connection aborted
         .GET()
         .responseAsync()
         .thenCompose(response -> {
@@ -496,6 +501,14 @@ java -p modules -m com.product/com.product.Main
 
 * 早速 Module System が必要なのか，お前は。。。
 <!-- .element: class="fragment" data-fragment-index="10" -->
+
+
+
+## 続きは Qiita で！
+
+* Qiita, 「今のうちに知っておきたい、かゆい所に手が届くJava9の新機能7選」, http://qiita.com/kashira2339/items/ce99d370eabbf2d66ded
+* Qiita, 「Java9で追加されたメソッド一覧とその使い方」, http://qiita.com/hcl/items/c684aa1b85d2425f0151
+* Qiita, 「Java9で文字列の結合の速度を確認する」, http://qiita.com/deaf_tadashi/items/73b9d4ecbfe6f8b14e8f
 
 
 
